@@ -8,7 +8,7 @@ router.post('/', [
 	check('whatsapp').trim().escape(),
 	check('marca', 'Marca do veículo é campo obrigatório.').trim().escape().notEmpty(),
 	check('modelo', 'Modelo do veículo é campo obrigatório.').trim().escape().notEmpty(),
-	check('ano','Ano tem quer ser válido').trim().escape().optional().isInt({ min: 1950, max: 2023}).toInt(),
+	check('ano','Ano tem quer ser válido').trim().escape().optional()
 	//check('data')
 	//campo data ainda é preciso implementação
 ], (req, res) => {

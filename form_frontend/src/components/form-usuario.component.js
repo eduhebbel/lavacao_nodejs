@@ -130,14 +130,14 @@ export default class FormUsuario extends Component {
 						<input type="text" value={this.state.sobrenome}	onChange={this.onChangeSobrenome} /><br />
 						Telefone para contato: <br />
 						<input type="text" value={this.state.telefone} onChange={this.onChangeTelefone} /><br />
-						Telefone informado permite contato por Whatsapp?: <br />
+						Telefone informado permite contato por Whatsapp?
 						<input type="checkbox" checked={this.state.whatsapp} onChange={this.onChangeWhatsapp} /><br />
 						Marca: *<br />
 						<input type="text" value={this.state.marca} onChange={this.onChangeMarca} /><br />
 						Modelo: *<br />
 						<input type="text" value={this.state.modelo} onChange={this.onChangeModelo} /><br />
 						Ano:<br />
-						<input type="number" min="1950" value={this.state.ano} onChange={this.onChangeAno} /><br />
+						<input type="number" min="1950" max="2023" value={this.state.ano} onChange={this.onChangeAno} /><br />
 						<br />
 						<hr />
 						<input type ="submit" value="Enviar" />
