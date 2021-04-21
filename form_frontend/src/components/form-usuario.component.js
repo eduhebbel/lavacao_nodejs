@@ -5,41 +5,27 @@ export default class FormUsuario extends Component {
 	constructor(props) {
 		super(props);
 
-		this.backendUrl = 'http://3.84.238.203:5000/usuarios';
+		this.backendUrl = 'http://IP_AWS:5000/usuarios';
 		this.baseState = {
 			nome: '',
-			email: '',
-			senha: '',
-			confSenha: '',
-			cidade: '',
-			idade: '',
-			comentarios: '',
-			sexo: '',
-			termos: false,
-			cidades: [
-				{ value: 1, label: "Florianópolis" },
-				{ value: 2, label: "São José" },
-				{ value: 3, label: "Outro" }
-			],
-			sexos: [
-				{ value: 'm', label: "Masculino" },
-				{ value: 'f', label: "Feminino" },
-				{ value: 'o', label: "Outro" }
-			],
+			sobrenome: '',
+			telefone: '',
+			whatsapp: false,
+			marca: '',
+			modelo: '',
+			ano: '',
 			contexto: {}
 		} //fim de this.baseState
 
 		this.state = this.baseState;
 
 		this.onChangeNome = this.onChangeNome.bind(this);
-		this.onChangeEmail = this.onChangeEmail.bind(this);
-	 	this.onChangeSenha = this.onChangeSenha.bind(this);
-		this.onChangeConfSenha = this.onChangeConfSenha.bind(this);
-		this.onChangeCidade = this.onChangeCidade.bind(this);
-		this.onChangeIdade = this.onChangeIdade.bind(this);
-		this.onChangeComentarios = this.onChangeComentarios.bind(this);
-		this.onChangeSexo = this.onChangeSexo.bind(this);
-		this.onChangeTermos = this.onChangeTermos.bind(this);
+		this.onChangeSobrenome = this.onChangeSobrenome.bind(this);
+	 	this.onChangeTelefone = this.onChangeTelefone.bind(this);
+		this.onChangeWhatsapp = this.onChangeWhatsapp.bind(this);
+		this.onChangeMarca = this.onChangeMarca.bind(this);
+		this.onChangeModelo = this.onChangeModelo.bind(this);
+		this.onChangeAno = this.onChangeAno.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onReset = this.onReset.bind(this);
 	} // fim do constructor()
@@ -48,36 +34,28 @@ export default class FormUsuario extends Component {
 		this.setState({ nome: e.target.value })
 	}
 
-	onChangeEmail(e) {
-		this.setState({ email: e.target.value })
+	onChangeSobrenome(e) {
+		this.setState({ sobrenome: e.target.value })
 	}
 
-	onChangeSenha(e) {
-		this.setState({ senha: e.target.value })
+	onChangeTelefone(e) {
+		this.setState({ telefone: e.target.value })
 	}
 
-	onChangeConfSenha(e) { 
-		this.setState({ confSenha: e.target.value })
+	onChangeWhatsapp(e) { 
+		this.setState({ whatsapp: e.target.value })
 	}
 
-	onChangeCidade(e) {
-		this.setState({ cidade: e.target.value })
+	onChangeMarca(e) {
+		this.setState({ marca: e.target.value })
 	}
 
-	onChangeIdade(e) {
-		this.setState({ idade: e.target.value })
+	onChangeModelo(e) {
+		this.setState({ modelo: e.target.value })
 	}
 
-	onChangeComentarios(e) {
-		this.setState({ comentarios: e.target.value })
-	}
-
-	onChangeSexo(e) {
-		this.setState({ sexo: e.target.value })
-	}
-
-	onChangeTermos(e) {
-		this.setState({ termos: e.target.value })
+	onChangeAno(e) {
+		this.setState({ ano: e.target.value })
 	}
 
 	onReset(e) {
@@ -89,14 +67,12 @@ export default class FormUsuario extends Component {
 
 		const usuario = {
 			nome: this.state.nome,
-			email: this.state.email,
-			senha: this.state.senha,
-			confSenha: this.state.confSenha,
-			cidade: this.state.cidade,
-			idade: this.state.idade,
-			comentarios: this.state.comentarios,
-			sexo: this.state.sexo,
-			termos: this.state.termos
+			sobrenome: this.state.sobrenome,
+			telefone: this.state.telefone,
+			whatsapp: this.state.whatsapp,
+			marca: this.state.marca,
+			modelo: this.state.modelo,
+			ano: this.state.ano
 		};
 
 		axios.post(this.backendUrl, usuario).then(res => this.setState({ contexto: res.data})).catch(erro => this.setState({ contexto: erro.response.data }));
@@ -120,28 +96,22 @@ export default class FormUsuario extends Component {
 					<b>Nome:</b> {contexto.usuario.nome}
 				</li>),
 				(<li key='2'>
-					<b>E-mail:</b> {contexto.usuario.email}
+					<b>Sobrenome:</b> {contexto.usuario.sobrenome}
 				</li>),
 				(<li key='3'>
-					<b>Senha:</b> {contexto.usuario.Senha}
+					<b>Telefone:</b> {contexto.usuario.telefone}
 				</li>),
 				(<li key='4'>
-					<b>Confirmar senha:</b> {contexto.usuario.confSenha}
+					<b>Whatsapp:</b> {contexto.usuario.whatsapp}
 				</li>),
 				(<li key='5'>
-					<b>Cidade:</b> {contexto.usuario.cidade}
+					<b>Marca:</b> {contexto.usuario.marca}
 				</li>),
 				(<li key='6'>
-					<b>Idade:</b> {contexto.usuario.idade}
+					<b>Modelo:</b> {contexto.usuario.modelo}
 				</li>),
 				(<li key='7'>
-					<b>Comentários:</b> {contexto.usuario.comentarios}
-				</li>),
-				(<li key='8'>
-					<b>Sexo:</b> {contexto.usuario.sexo}
-				</li>),
-				(<li key='9'>
-					<b>Termos:</b> {contexto.usuario.termos.toString()}
+					<b>Ano:</b> {contexto.usuario.ano}
 				</li>)
 			]
 		} // fim do if (contexto.usuario)
@@ -149,56 +119,30 @@ export default class FormUsuario extends Component {
 		return (
 			<>
 				<h1>
-					Manipulando formulários com Node.js, Express e React
+					Sistema de agendamendo de lavação de veículos usando Node.js, Express e React
 				</h1>
 				<form onSubmit={this.onSubmit}>
 					<fieldset>
-						<legend>Novo Usuário</legend>
+						<legend>Novo Agendamento</legend>
 						Nome: *<br />
-						<input type="text" value={this.state.nome}
-							onChange={this.onChangeNome} /><br />
-						E-mail: *<br />
-						<input type="text" value={this.state.email}
-							onChange={this.onChangeEmail} /><br />
-						Senha: *<br />
-						<input type="password" value={this.state.senha} onChange={this.onChangeSenha} /><br />
-						Confirmar senha: *<br />
-						<input type="password" value={this.state.confSenha} onChange={this.onChangeConfSenha} /><br />
-						Cidade:<br />
-						<select value={this.state.cidade} onChange={this.onChangeCiadade}>
-						<option value="-1">--Selecione</option>
-						{
-							this.state.cidades.map(obj => {
-								return (<option key={obj.value} value={obj.value}>{obj.label}</option>);
-							})
-						}
-						</select><br />
-						Idade:<br />
-						<input type="text" value={this.state.idade}
-							onChange={this.onChangeIdade} /><br />
-						Comentários:<br />
-						<textarea value={this.state.comentarios}
-							onChange={this.onChangeComentarios}
-							rows="4" cols="30">
-						</textarea><br />
-						Sexo:<br />
-						{
-							this.state.sexos.map((obj,idx) => {
-								return (<React.Fragment key={idx}>
-									<input type="radio" name="sexo"
-										checked ={this.state.sexo === obj.value} value={obj.value} onChange={this.onChangeSexo} />
-									{obj.label}
-								</React.Fragment>);
-							})
-						}
-						<br />
-						<br />
-						<input type="checkbox" checked={this.state.termos} onChange={this.onChangeTermos} /> Concordo com os termos de uso *
+						<input type="text" value={this.state.nome} onChange={this.onChangeNome} /><br />
+						Sobrenome: *<br />
+						<input type="text" value={this.state.sobrenome}	onChange={this.onChangeSobrenome} /><br />
+						Telefone para contato: <br />
+						<input type="text" value={this.state.telefone} onChange={this.onChangeTelefone} /><br />
+						Telefone informado permite contato por Whatsapp?: <br />
+						<input type="checkbox" checked={this.state.whatsapp} onChange={this.onChangeWhatsapp} /><br />
+						Marca: *<br />
+						<input type="text" value={this.state.marca} onChange={this.onChangeMarca} /><br />
+						Modelo: *<br />
+						<input type="text" value={this.state.modelo} onChange={this.onChangeModelo} /><br />
+						Ano:<br />
+						<input type="number" min="1950" value={this.state.ano} onChange={this.onChangeAno} /><br />
 						<br />
 						<hr />
 						<input type ="submit" value="Enviar" />
 						<input type ="button" value="Limpar" onClick={this.onReset} />
-						* Compos obrigatórios
+						* Campos obrigatórios
 					</fieldset>
 				</form>
 				{
@@ -208,7 +152,7 @@ export default class FormUsuario extends Component {
 				<h2>Dados recebidos:</h2>
 				{contexto.usuario && <ul>{usuario}</ul>}
 			</>
-		); // fim do retunr
+		); // fim do return
 	} //fim do render()
 } // fim da classe FormUsuario
 
