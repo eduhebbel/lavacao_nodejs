@@ -5,7 +5,7 @@ export default class FormUsuario extends Component {
 	constructor(props) {
 		super(props);
 
-		this.backendUrl = 'http://IP_AWS:5000/usuarios';
+		this.backendUrl = 'http://54.211.248.229:5000/usuarios';
 		this.baseState = {
 			nome: '',
 			sobrenome: '',
@@ -102,7 +102,7 @@ export default class FormUsuario extends Component {
 					<b>Telefone:</b> {contexto.usuario.telefone}
 				</li>),
 				(<li key='4'>
-					<b>Whatsapp:</b> {contexto.usuario.whatsapp}
+					<b>Whatsapp:</b> {contexto.usuario.whatsapp.toString()}
 				</li>),
 				(<li key='5'>
 					<b>Marca:</b> {contexto.usuario.marca}
@@ -130,8 +130,9 @@ export default class FormUsuario extends Component {
 						<input type="text" value={this.state.sobrenome}	onChange={this.onChangeSobrenome} /><br />
 						Telefone para contato: <br />
 						<input type="text" value={this.state.telefone} onChange={this.onChangeTelefone} /><br />
-						Telefone informado permite contato por Whatsapp?
-						<input type="checkbox" checked={this.state.whatsapp} onChange={this.onChangeWhatsapp} /><br />
+						Maque a caixa de seleção caso o telefone permita contato por Whatsapp:
+						<input type="checkbox" checked={this.state.whatsapp} onChange={this.onChangeWhatsapp} /><br /><br />
+
 						Marca: *<br />
 						<input type="text" value={this.state.marca} onChange={this.onChangeMarca} /><br />
 						Modelo: *<br />
@@ -141,7 +142,7 @@ export default class FormUsuario extends Component {
 						<br />
 						<hr />
 						<input type ="submit" value="Enviar" />
-						<input type ="button" value="Limpar" onClick={this.onReset} />
+						<input type ="button" value="Limpar" onClick={this.onReset} /><br />
 						* Campos obrigatórios
 					</fieldset>
 				</form>
