@@ -3,7 +3,7 @@ const cors = require('cors');
 
 const app = express();
 const port = 5000;
-const hostname = '3.84.238.203';
+const hostname = 'IP_AWS';
 const usuariosRouter = require('./routes/usuarios');
 
 app.use(cors());
