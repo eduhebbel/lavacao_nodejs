@@ -1,16 +1,22 @@
 const router = require('express').Router();
 const { check, body, validationResult } = require('express-validator');
+//const eh_dia_util = require('eh-dia-util');
 
 router.post('/', [
 	check('nome', 'Nome é campo obrigatório.').trim().escape().notEmpty(),
 	check('sobrenome', 'Sobrenome é campo obrigatório.').trim().escape().notEmpty(),
 	check('telefone').trim().escape().optional(), //Opcional: Encontrar uma solução para validação de telefone em formato válido
 	check('whatsapp').trim().escape().optional().toBoolean(),
+	check('hora', 'Hora é campo obrigatório.').trim().escape().notEmpty(),
 	check('marca', 'Marca do veículo é campo obrigatório.').trim().escape().notEmpty(),
 	check('modelo', 'Modelo do veículo é campo obrigatório.').trim().escape().notEmpty(),
-	check('ano','Ano tem quer ser válido').trim().escape().optional()
-	//check('data')
-	//campo data ainda é preciso implementação
+	check('ano','Ano tem quer ser válido').trim().escape().optional(),
+	check('data', 'Data é campo obrigatório.').trim().escape().notEmpty() //.custom((reqData) => {
+  //     const dataAtual = new Date(Date.now());
+  //      const data = new Date(reqData);
+ //       if(eh_dia_util(data)){return data >= dataAtual};
+ //       return false;
+ //    }).withMessage("Data inválida."),
 ], (req, res) => {
 	const erros = validationResult(req);
 	const usuario = req.body;

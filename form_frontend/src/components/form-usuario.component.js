@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Button } from 'reactstrap';
+import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 
 export default class FormUsuario extends Component {
 	constructor(props) {
 		super(props);
 
-		this.backendUrl = 'http://54.211.248.229:5000/usuarios';
+		this.backendUrl = 'http://54.209.140.206:5000/usuarios';
 		this.baseState = {
 			nome: '',
 			sobrenome: '',
 			telefone: '',
 			whatsapp: false,
+			data:'',
+			hora:'',
 			marca: '',
 			modelo: '',
 			ano: '',
@@ -21,8 +25,10 @@ export default class FormUsuario extends Component {
 
 		this.onChangeNome = this.onChangeNome.bind(this);
 		this.onChangeSobrenome = this.onChangeSobrenome.bind(this);
-	 	this.onChangeTelefone = this.onChangeTelefone.bind(this);
+		this.onChangeTelefone = this.onChangeTelefone.bind(this);
 		this.onChangeWhatsapp = this.onChangeWhatsapp.bind(this);
+		this.onChangeData = this.onChangeData.bind(this);
+		this.onChangeHora = this.onChangeHora.bind(this);
 		this.onChangeMarca = this.onChangeMarca.bind(this);
 		this.onChangeModelo = this.onChangeModelo.bind(this);
 		this.onChangeAno = this.onChangeAno.bind(this);
@@ -42,8 +48,14 @@ export default class FormUsuario extends Component {
 		this.setState({ telefone: e.target.value })
 	}
 
-	onChangeWhatsapp(e) { 
+	onChangeWhatsapp(e) {
 		this.setState({ whatsapp: e.target.value })
+	}
+	onChangeData(e) {
+		this.setState({ hora: e.target.value })
+	}
+	onChangeHora(e) {
+		this.setState({ hora: e.target.value })
 	}
 
 	onChangeMarca(e) {
@@ -70,24 +82,25 @@ export default class FormUsuario extends Component {
 			sobrenome: this.state.sobrenome,
 			telefone: this.state.telefone,
 			whatsapp: this.state.whatsapp,
+			data: this.state.data,
+			hora: this.state.hora,
 			marca: this.state.marca,
 			modelo: this.state.modelo,
 			ano: this.state.ano
 		};
 
-		axios.post(this.backendUrl, usuario).then(res => this.setState({ contexto: res.data})).catch(erro => this.setState({ contexto: erro.response.data }));
-
+		axios.post(this.backendUrl, usuario).then(res => this.setState({ contexto: res.data })).catch(erro => this.setState({ contexto: erro.response.data }));
 		this.setState(this.baseState);
 	} //fim do onSubmit()
 
-	
+
 	render() {
 		const contexto = this.state.contexto;
-		let erros =[];
+		let erros = [];
 		if (contexto.erros) {
 			erros = contexto.erros.map(
-				(erro, idx) => (
-					<li key={idx}>{erro.msg}</li>));
+			(erro, idx) => (<li key={idx}>{erro.msg}</li>)
+			);
 		}
 		let usuario = [];
 		if (contexto.usuario) {
@@ -105,52 +118,74 @@ export default class FormUsuario extends Component {
 					<b>Whatsapp:</b> {contexto.usuario.whatsapp.toString()}
 				</li>),
 				(<li key='5'>
-					<b>Marca:</b> {contexto.usuario.marca}
-				</li>),
+					<b>Data do agendamento:</b> {contexto.usuario.data}
+				</li>),	
 				(<li key='6'>
-					<b>Modelo:</b> {contexto.usuario.modelo}
-				</li>),
+					<b>Hora do agendamento:</b> {contexto.usuario.hora}
+				</li>),											
 				(<li key='7'>
-					<b>Ano:</b> {contexto.usuario.ano}
+					<b>Marca do Carro:</b> {contexto.usuario.marca}
+				</li>),
+				(<li key='8'>
+					<b>Modelo do Carro:</b> {contexto.usuario.modelo}
+				</li>),
+				(<li key='9'>
+					<b>Ano do Carro:</b> {contexto.usuario.ano}
 				</li>)
 			]
 		} // fim do if (contexto.usuario)
 
 		return (
 			<>
-				<h1>
-					Sistema de agendamendo de lavação de veículos usando Node.js, Express e React
+				<h1> <b> Sistema de agendamendo</b> <br />
+			-----------------------------------
 				</h1>
+				<h1> Informações do cliente</h1>
 				<form onSubmit={this.onSubmit}>
 					<fieldset>
 						<legend>Novo Agendamento</legend>
 						Nome: *<br />
-						<input type="text" value={this.state.nome} onChange={this.onChangeNome} /><br />
+						<input type="text" required value={this.state.nome} onChange={this.onChangeNome}  /><br />
 						Sobrenome: *<br />
-						<input type="text" value={this.state.sobrenome}	onChange={this.onChangeSobrenome} /><br />
+						<input type="text" required value={this.state.sobrenome} onChange={this.onChangeSobrenome} /><br />
 						Telefone para contato: <br />
-						<input type="text" value={this.state.telefone} onChange={this.onChangeTelefone} /><br />
-						Maque a caixa de seleção caso o telefone permita contato por Whatsapp:
-						<input type="checkbox" checked={this.state.whatsapp} onChange={this.onChangeWhatsapp} /><br /><br />
+						<input type="text" value={this.state.telefone} onChange={this.onChangeTelefone} /><br /><br />
+						
+						Você permite o contato via Whatssapp?
+			            <InputGroupAddon addonType="prepend">
+						<Input addon type="checkbox" checked={this.state.whatsapp} onChange={this.onChangeWhatsapp} />
+						</InputGroupAddon>
+						<br/>
+						<br />
+						<h1> Informações do agendamento</h1>
+						<br/>
+						Data do agendamento: <br />
+						<input type="date" value={this.state.data} onChange={this.onChangeData} /><br />
+						Hora do agendamento: <br />
+						<input type="time" value={this.state.hora} onChange={this.onChangeHora} /><br />
+						<br />
+						<br />
 
+						<h1> Informações do carro</h1>
+						<br />
 						Marca: *<br />
-						<input type="text" value={this.state.marca} onChange={this.onChangeMarca} /><br />
+						<input type="text"  required value={this.state.marca} onChange={this.onChangeMarca} /><br />
 						Modelo: *<br />
-						<input type="text" value={this.state.modelo} onChange={this.onChangeModelo} /><br />
+						<input type="text"  required value={this.state.modelo} onChange={this.onChangeModelo} /><br />
 						Ano:<br />
 						<input type="number" min="1950" max="2023" value={this.state.ano} onChange={this.onChangeAno} /><br />
 						<br />
-						<hr />
-						<input type ="submit" value="Enviar" />
-						<input type ="button" value="Limpar" onClick={this.onReset} /><br />
+						<br />
+
+						<Button color="success" type="submit" > Enviar</Button>
+						<Button color="danger" onClick={this.onReset} >Limpar</Button><br />
 						* Campos obrigatórios
 					</fieldset>
 				</form>
-				{
-					contexto.erros && <ul>{erros}</ul>
-				}
 
-				<h2>Dados recebidos:</h2>
+
+				{contexto.erros && <ul>{erros}</ul>}
+				<h2><b> Dados recebidos:</b></h2>
 				{contexto.usuario && <ul>{usuario}</ul>}
 			</>
 		); // fim do return
