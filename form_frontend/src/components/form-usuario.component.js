@@ -140,9 +140,11 @@ export default class FormUsuario extends Component {
 
 		return (
 			<>
-				<h1> <b> Sistema de agendamendo</b> <br />
-			-----------------------------------
-				</h1>
+				
+				<h1> <b> Sistema de agendamendo</b><br />
+				------------------------------ <br /></h1>
+				<br />
+			
 				<h1> Informações do cliente</h1>
 				<form onSubmit={this.onSubmit}>
 					<fieldset>
@@ -152,7 +154,7 @@ export default class FormUsuario extends Component {
 						Sobrenome: *<br />
 						<input type="text" required value={this.state.sobrenome} onChange={this.onChangeSobrenome} /><br />
 						Telefone para contato: <br />
-						<input type="number"  value={ this.state.telefone} onChange={this.onChangeTelefone} placeholder={'(ddd) 0808 - 08080'} max="13"/><br /><br />
+						<input type="tel"  value={ this.state.telefone} onChange={this.onChangeTelefone}  replace={(/^\s+|\s+$/g, '')} placeholder={'(ddd) 0808 - 08080'}  maxlength="11" size="11"/><br /><br />
 						
 						Você permite o contato via Whatssapp?
 			            <InputGroupAddon addonType="prepend">
@@ -161,18 +163,18 @@ export default class FormUsuario extends Component {
 						<br/>
 						<br />
 						<h1> Informações do agendamento</h1>
+						<h4> Trabalhamos das 08:00 às 18:00; de segunda à sexta</h4><br />
 						<br/>
 						Data do agendamento: <br />
+						
 						<input type="date"  min="2021-04-29"  value={this.state.data} onChange={this.onChangeData}  /><br />
 	
+						
 						Hora do agendamento: <br />
-						<input type="time" min="08:00" max="18:00" placeholder={'min="08:00" max="18:00"'}  value={this.state.hora} onChange={this.onChangeHora} /><br />
+						<input type="time" min="08:00" max="18:00"  value={this.state.hora} onChange={this.onChangeHora} /><br />
 						<br />
 						<br />
-						Hora do agendamento: <br />
-						<input type="time" min="08:00" max="18:00" placeholder={'min="08:00" max="18:00"'}  value={this.state.hora} onChange={this.onChangeHora} /><br />
-						<br />
-						<br />
+						
 
 						
 						<h1> Informações do carro</h1>
