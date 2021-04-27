@@ -11,7 +11,7 @@ router.post('/', [
 	check('marca', 'Marca do veículo é campo obrigatório.').trim().escape().notEmpty(),
 	check('modelo', 'Modelo do veículo é campo obrigatório.').trim().escape().notEmpty(),
 	check('ano','Ano tem quer ser válido').trim().escape().optional(),
-	check('startDate', 'Data é campo obrigatório.').trim().escape().notEmpty()
+	check('startDate', 'Data é campo obrigatório.').trim().escape().notEmpty().isISO8601().toDate().isAfter().withMessage("Data do agendamento não pode ser anterior ao dia de hoje")
   //     const dataAtual = new Date(Date.now());
   //      const data = new Date(reqData);
  //       if(eh_dia_util(data)){return data >= dataAtual};

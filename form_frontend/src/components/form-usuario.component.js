@@ -154,7 +154,7 @@ export default class FormUsuario extends Component {
 						Sobrenome: *<br />
 						<input type="text" placeholder="Digite seu sobrenome" size="50"  value={this.state.sobrenome} onChange={this.onChangeSobrenome} /><br />
 						Telefone para contato: <br />
-						<input type="text" placeholder="(00)00000-0000" pattern="[\(]\d{2}[\)]\d{5}[\-]\d{4}"  value={this.state.telefone} onChange={this.onChangeTelefone} /><br /><br />
+						<input type="tel" placeholder="(00)00000-0000"  maxLength="13"  value={this.state.telefone} onChange={this.onChangeTelefone} /><br /><br />
 						
 						Você permite o contato via Whatssapp?
 			            <InputGroupAddon addonType="prepend">
@@ -172,7 +172,6 @@ export default class FormUsuario extends Component {
 							showTimeSelect
 							timeIntervals={30}
 							timeCaption="Horário"
-							minDate={new Date()}
 							minTime={setHours(setMinutes(new Date(),0),8)}
 							maxTime={setHours(setMinutes(new Date(),30),17)}
 							name="startDate"
