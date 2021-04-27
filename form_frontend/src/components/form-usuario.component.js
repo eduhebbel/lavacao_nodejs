@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button } from 'reactstrap';
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 
+
 export default class FormUsuario extends Component {
 	constructor(props) {
 		super(props);
@@ -35,6 +36,8 @@ export default class FormUsuario extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onReset = this.onReset.bind(this);
 	} // fim do constructor()
+
+
 
 	onChangeNome(e) {
 		this.setState({ nome: e.target.value })
@@ -149,7 +152,7 @@ export default class FormUsuario extends Component {
 						Sobrenome: *<br />
 						<input type="text" required value={this.state.sobrenome} onChange={this.onChangeSobrenome} /><br />
 						Telefone para contato: <br />
-						<input type="text" value={this.state.telefone} onChange={this.onChangeTelefone} /><br /><br />
+						<input type="number"  value={ this.state.telefone} onChange={this.onChangeTelefone} placeholder={'(ddd) 0808 - 08080'} max="13"/><br /><br />
 						
 						Você permite o contato via Whatssapp?
 			            <InputGroupAddon addonType="prepend">
@@ -160,12 +163,18 @@ export default class FormUsuario extends Component {
 						<h1> Informações do agendamento</h1>
 						<br/>
 						Data do agendamento: <br />
-						<input type="date" value={this.state.data} onChange={this.onChangeData} /><br />
+						<input type="date"  min="2021-04-29"  value={this.state.data} onChange={this.onChangeData}  /><br />
+	
 						Hora do agendamento: <br />
-						<input type="time" value={this.state.hora} onChange={this.onChangeHora} /><br />
+						<input type="time" min="08:00" max="18:00" placeholder={'min="08:00" max="18:00"'}  value={this.state.hora} onChange={this.onChangeHora} /><br />
+						<br />
+						<br />
+						Hora do agendamento: <br />
+						<input type="time" min="08:00" max="18:00" placeholder={'min="08:00" max="18:00"'}  value={this.state.hora} onChange={this.onChangeHora} /><br />
 						<br />
 						<br />
 
+						
 						<h1> Informações do carro</h1>
 						<br />
 						Marca: *<br />
