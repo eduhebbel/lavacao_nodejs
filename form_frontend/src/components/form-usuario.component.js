@@ -1,21 +1,31 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Button } from 'reactstrap';
-import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
+import { InputGroupAddon,  Input } from 'reactstrap';
+import DatePicker from 'react-datepicker';
+//import { subDays } from 'date-fns';
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
+import { registerLocale } from  "react-datepicker";
+import pt_BR from 'date-fns/locale/pt-BR';
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale('pt-BR', pt_BR)
 
 
 export default class FormUsuario extends Component {
+	
 	constructor(props) {
 		super(props);
 
-		this.backendUrl = 'http://54.209.140.206:5000/usuarios';
+		this.backendUrl = 'http://192.168.191.119:5000/usuarios';
+
+
 		this.baseState = {
 			nome: '',
 			sobrenome: '',
 			telefone: '',
 			whatsapp: false,
-			data:'',
-			hora:'',
+			startDate: new Date(),
 			marca: '',
 			modelo: '',
 			ano: '',
@@ -28,16 +38,13 @@ export default class FormUsuario extends Component {
 		this.onChangeSobrenome = this.onChangeSobrenome.bind(this);
 		this.onChangeTelefone = this.onChangeTelefone.bind(this);
 		this.onChangeWhatsapp = this.onChangeWhatsapp.bind(this);
-		this.onChangeData = this.onChangeData.bind(this);
-		this.onChangeHora = this.onChangeHora.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 		this.onChangeMarca = this.onChangeMarca.bind(this);
 		this.onChangeModelo = this.onChangeModelo.bind(this);
 		this.onChangeAno = this.onChangeAno.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onReset = this.onReset.bind(this);
 	} // fim do constructor()
-
-
 
 	onChangeNome(e) {
 		this.setState({ nome: e.target.value })
@@ -54,8 +61,8 @@ export default class FormUsuario extends Component {
 	onChangeWhatsapp(e) {
 		this.setState({ whatsapp: e.target.value })
 	}
-	onChangeData(e) {
-		this.setState({ hora: e.target.value })
+	handleChange(date) {
+		this.setState({ startDate: date})
 	}
 	onChangeHora(e) {
 		this.setState({ hora: e.target.value })
@@ -85,8 +92,7 @@ export default class FormUsuario extends Component {
 			sobrenome: this.state.sobrenome,
 			telefone: this.state.telefone,
 			whatsapp: this.state.whatsapp,
-			data: this.state.data,
-			hora: this.state.hora,
+			startDate: this.state.startDate,
 			marca: this.state.marca,
 			modelo: this.state.modelo,
 			ano: this.state.ano
@@ -95,7 +101,6 @@ export default class FormUsuario extends Component {
 		axios.post(this.backendUrl, usuario).then(res => this.setState({ contexto: res.data })).catch(erro => this.setState({ contexto: erro.response.data }));
 		this.setState(this.baseState);
 	} //fim do onSubmit()
-
 
 	render() {
 		const contexto = this.state.contexto;
@@ -121,40 +126,35 @@ export default class FormUsuario extends Component {
 					<b>Whatsapp:</b> {contexto.usuario.whatsapp.toString()}
 				</li>),
 				(<li key='5'>
-					<b>Data do agendamento:</b> {contexto.usuario.data}
-				</li>),	
-				(<li key='6'>
-					<b>Hora do agendamento:</b> {contexto.usuario.hora}
+					<b>Data e horário do agendamento:</b> {contexto.usuario.startDate.toString()}
 				</li>),											
-				(<li key='7'>
+				(<li key='6'>
 					<b>Marca do Carro:</b> {contexto.usuario.marca}
 				</li>),
-				(<li key='8'>
+				(<li key='7'>
 					<b>Modelo do Carro:</b> {contexto.usuario.modelo}
 				</li>),
-				(<li key='9'>
+				(<li key='8'>
 					<b>Ano do Carro:</b> {contexto.usuario.ano}
 				</li>)
 			]
 		} // fim do if (contexto.usuario)
-
+		
 		return (
 			<>
-				
-				<h1> <b> Sistema de agendamendo</b><br />
-				------------------------------ <br /></h1>
-				<br />
-			
+				<h1> <b> Sistema de agendamendo</b> <br />
+			-----------------------------------
+				</h1>
 				<h1> Informações do cliente</h1>
 				<form onSubmit={this.onSubmit}>
 					<fieldset>
 						<legend>Novo Agendamento</legend>
 						Nome: *<br />
-						<input type="text" required value={this.state.nome} onChange={this.onChangeNome}  /><br />
+						<input type="text" placeholder="Digite seu nome" size="50" value={this.state.nome} onChange={this.onChangeNome}  /><br />
 						Sobrenome: *<br />
-						<input type="text" required value={this.state.sobrenome} onChange={this.onChangeSobrenome} /><br />
+						<input type="text" placeholder="Digite seu sobrenome" size="50"  value={this.state.sobrenome} onChange={this.onChangeSobrenome} /><br />
 						Telefone para contato: <br />
-						<input type="tel"  value={ this.state.telefone} onChange={this.onChangeTelefone}  replace={(/^\s+|\s+$/g, '')} placeholder={'(ddd) 0808 - 08080'}  maxlength="11" size="11"/><br /><br />
+						<input type="text" placeholder="(00)00000-0000" pattern="[\(]\d{2}[\)]\d{5}[\-]\d{4}"  value={this.state.telefone} onChange={this.onChangeTelefone} /><br /><br />
 						
 						Você permite o contato via Whatssapp?
 			            <InputGroupAddon addonType="prepend">
@@ -163,26 +163,31 @@ export default class FormUsuario extends Component {
 						<br/>
 						<br />
 						<h1> Informações do agendamento</h1>
-						<h4> Trabalhamos das 08:00 às 18:00; de segunda à sexta</h4><br />
 						<br/>
 						Data do agendamento: <br />
-						
-						<input type="date"  min="2021-04-29"  value={this.state.data} onChange={this.onChangeData}  /><br />
-	
-						
-						Hora do agendamento: <br />
-						<input type="time" min="08:00" max="18:00"  value={this.state.hora} onChange={this.onChangeHora} /><br />
-						<br />
-						<br />
-						
+						<DatePicker
+							locale="pt-BR"
+							selected={ this.state.startDate }
+              				onChange={ this.handleChange }
+							showTimeSelect
+							timeIntervals={30}
+							timeCaption="Horário"
+							minDate={new Date()}
+							minTime={setHours(setMinutes(new Date(),0),8)}
+							maxTime={setHours(setMinutes(new Date(),30),17)}
+							name="startDate"
+							dateFormat="MMMM d, yyyy HH:mm"								
+          				/>
 
-						
+						<br />
+						<br />
+
 						<h1> Informações do carro</h1>
 						<br />
 						Marca: *<br />
-						<input type="text"  required value={this.state.marca} onChange={this.onChangeMarca} /><br />
+						<input type="text" placeholder="Digite a marca do seu veículo" size="50" value={this.state.marca} onChange={this.onChangeMarca} /><br />
 						Modelo: *<br />
-						<input type="text"  required value={this.state.modelo} onChange={this.onChangeModelo} /><br />
+						<input type="text" placeholder="Digite o modelo do seu veículo" size="50" value={this.state.modelo} onChange={this.onChangeModelo} /><br />
 						Ano:<br />
 						<input type="number" min="1950" max="2023" value={this.state.ano} onChange={this.onChangeAno} /><br />
 						<br />
@@ -196,10 +201,9 @@ export default class FormUsuario extends Component {
 
 
 				{contexto.erros && <ul>{erros}</ul>}
-				<h2><b> Dados recebidos:</b></h2>
+				<h2><b> Dados recebidos:</b></h2><br />
 				{contexto.usuario && <ul>{usuario}</ul>}
 			</>
 		); // fim do return
 	} //fim do render()
 } // fim da classe FormUsuario
-
